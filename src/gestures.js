@@ -263,8 +263,6 @@ eventFn.tap = function (el, type, fn, options) {
 				me.expired = true;
 			}
 
-			e.preventDefault();
-
 			me.el.addClass('active');
 
 			if (me.ns.retain) {
@@ -306,7 +304,7 @@ eventFn.tap = function (el, type, fn, options) {
 			}
 		},
 
-		onEnd: function () {
+		onEnd: function (e) {
 			var me = this;
 
 			me.el.removeClass('active');
@@ -339,6 +337,7 @@ eventFn.tap = function (el, type, fn, options) {
 			me.ns.tapCount = 0;
 
 			if (!me.moved && !me.expired) {
+				e.preventDefault();
 				me.callback.call(me);
 			}
 		}
