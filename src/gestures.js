@@ -46,8 +46,7 @@ var $ = function (query) {
 		scale: { type: 'gesture', options: { scale: true, scaleThreshold: 0.2 } },
 		rotate: { type: 'gesture', options: { rotate: true, rotateThreshold: 10 } }
 	},
-	eventFn = {},
-	eventList = [];
+	eventFn = {};
 
 // Merge two objects
 $.extend = function (obj, target) {
@@ -101,53 +100,6 @@ NL.prototype = {
 		return that.each(function () {
 			eventFn[customEvents[type].type](this, type, fn, defaults);
 		});
-	},
-
-	off: function (type, fn) {
-		if (!type) {
-			return;
-		}
-
-		var that = this;
-
-		type = type.toLowerCase();
-
-		if (!customEvents[type]) {
-			return that;
-		}
-
-		var results = [];
-		for (var i=(eventList.length - 1); i >= 0; i--) {
-			if (this[0] == eventList[i].el[0]) {
-				var events = eventList[i];
-				if (events.type === events.type) {
-					if (!fn || events.fn === fn) {
-						results.push(events);
-						eventList.splice(i, 1);
-					}
-				}
-			}
-		}
-		for (var i=0, len=results.length; i<len; i++) {
-			var touchlayer = results[i];
-			if (touchlayer.options && touchlayer.options.onEnd) {
-				touchlayer.options.onEnd.call(touchlayer);
-			}
-		}
-	},
-
-	getEvents: function () {
-		var that = this,
-		 	i, l = eventList.length,
-			result = [];
-
-		for (i=0; i<l; i++) {
-			if (this[0] == eventList[i].el[0]) {
-				result.push(eventList[i]);
-			}
-		}
-
-		return result;
 	},
 
 	bind: function (type, fn, capture) {
@@ -240,7 +192,7 @@ eventFn.tap = function (el, type, fn, options) {
 		return rightclick;
 	}
 
-	eventList.push(new TouchLayer(el, type, fn, {
+	new TouchLayer(el, type, fn, {
 		onInit: function () {
 			var me = this;
 
@@ -341,13 +293,13 @@ eventFn.tap = function (el, type, fn, options) {
 				me.callback.call(me);
 			}
 		}
-	}));
+	});
 };
 
 eventFn.swipe = function (el, type, fn, options) {
 	options = options || {};
 
-	eventList.push(new TouchLayer(el, type, fn, {
+	new TouchLayer(el, type, fn, {
 		onInit: function () {
 			var me = this;
 
@@ -385,13 +337,13 @@ eventFn.swipe = function (el, type, fn, options) {
 				me.callback(me);
 			}
 		}
-	}));
+	});
 };
 
 eventFn.gesture = function (el, type, fn, options) {
 	options = options || {};
 
-	eventList.push(new TouchLayer(el, type, fn, {
+	new TouchLayer(el, type, fn, {
 		onInit: function () {
 			var me = this;
 
@@ -437,7 +389,7 @@ eventFn.gesture = function (el, type, fn, options) {
 				me.callback(me);
 			}
 		}
-	}));
+	});
 };
 
 
